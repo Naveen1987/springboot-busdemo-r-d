@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -47,7 +49,7 @@ public class Tblrole implements Serializable {
     private Calendar lastModifiedOn;
     @OneToMany(cascade = {CascadeType.ALL},fetch=FetchType.LAZY,mappedBy="tblrole",orphanRemoval=true)
     @JsonManagedReference
-    private List<Tbllogin> tbllogin=new ArrayList<Tbllogin>();
+   private List<Tbllogin> tbllogin=new ArrayList<Tbllogin>();
     
     /*
      * 

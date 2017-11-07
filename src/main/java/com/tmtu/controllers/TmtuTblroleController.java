@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -76,6 +78,18 @@ public class TmtuTblroleController {
 	public ResponseEntity<List<Map<String,String>>> getAllRoles(){
 		List<Map<String,String>> roles=tmtuTblroleService.getAllRoles();		
 		return new ResponseEntity<List<Map<String, String>>>(roles, HttpStatus.OK);
+	}
+	
+	@GetMapping("/rolesall")
+	public ResponseEntity<Page<Map<String, Object>>> rolesall(Pageable page){
+		Page<Map<String, Object>> roles=tmtuTblroleService.findAll(page);
+		return new ResponseEntity<>(roles, HttpStatus.OK);
+	}
+	
+	@GetMapping("/rolesallpm")
+	public ResponseEntity<Page<Map<String, Object>>> rolesallpm(Pageable page){
+		Page<Map<String, Object>> roles=tmtuTblroleService.findAllPm(page);
+		return new ResponseEntity<>(roles, HttpStatus.OK);
 	}
 	
 	/*@GetMapping("/rolem")

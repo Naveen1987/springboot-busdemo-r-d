@@ -11,6 +11,10 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.tmtu.models.Tbllogin;
 import com.tmtu.models.Tblrole;
@@ -90,6 +94,43 @@ public class TmtuTblroleService {
 		List<Object[]> tblrole=tmtuTblroleRepository.findPm();
 		return tblrole;
 	}
+	
+	public Page<Map<String, Object>> findAll(Pageable page){
+		Page<Tblrole> roles=tmtuTblroleRepository.findAll(page);
+		Page<Map<String, Object>> data=roles.map(new Converter<Tblrole, Map<String,Object>>() {
+
+			@Override
+			public Map<String, Object> convert(Tblrole tbl) {
+				Map<String,Object> record=new HashMap<String,Object>();
+				record.put("roleid", tbl.getRoleId());
+				record.put("rolename", tbl.getRoleName());
+				return record;
+			}
+		});
+		return data;
+	}
+	
+	public Page<Map<String, Object>> findAllPm(Pageable page){
+		Page<Object[]> roles= tmtuTblroleRepository.findPm(page);
+		Page<Map<String, Object>> data=roles.map(new Converter<Object[], Map<String,Object>>() {
+
+
+			@Override
+			public Map<String, Object> convert(Object[] obj) {
+				Map<String,Object> record=new HashMap<String,Object>();
+				//u.tblloginId,u.userName,u.tblrole.roleId,u.tblrole.roleName
+				record.put("id",obj[0]);
+				record.put("username",obj[1]);
+				record.put("roleid",obj[2]);
+				record.put("rolename",obj[3]);
+				return record;
+			}
+		});
+		return data;
+	}
+	/*public Page<Map<String,String>> findAll(Pageable page){
+		
+	}*/
 	
 	/*public void delete(long roleid) {
 		tmtuTblroleRepository.delete(roleid);
